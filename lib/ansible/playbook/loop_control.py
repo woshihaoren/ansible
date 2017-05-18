@@ -29,9 +29,9 @@ from ansible.playbook.base import Base
 
 class LoopControl(Base):
 
-    _loop_var = FieldAttribute(isa='str')
-    _label    = FieldAttribute(isa='str')
-    _pause    = FieldAttribute(isa='int')
+    _loop_var = FieldAttribute(isa='str', always_post_validate=True)
+    _label    = FieldAttribute(isa='str', always_post_validate=True)
+    _pause    = FieldAttribute(isa='float', always_post_validate=True)
 
     def __init__(self):
         super(LoopControl, self).__init__()
