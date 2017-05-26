@@ -679,9 +679,12 @@ class CLI(with_metaclass(ABCMeta, object)):
     @staticmethod
     def _play_prereqs(options):
 
+        # STARTDOC: architecture_deep_dive:ID:cli_data_loader
         # all needs loader
         loader = DataLoader()
+        # ENDDOC: architecture_deep_dive:ID:cli_data_loader
 
+        # STARTDOC: architecture_deep_dive:ID:cli_vault_pass
         # vault
         b_vault_pass = None
         if options.vault_password_file:
@@ -692,10 +695,14 @@ class CLI(with_metaclass(ABCMeta, object)):
 
         if b_vault_pass is not None:
             loader.set_vault_password(b_vault_pass)
+        # ENDDOC: architecture_deep_dive:ID:cli_vault_pass
 
+        # STARTDOC: architecture_deep_dive:ID:cli_inventory
         # create the inventory, and filter it based on the subset specified (if any)
         inventory = InventoryManager(loader=loader, sources=options.inventory)
+        # ENDDOC: architecture_deep_dive:ID:cli_inventory
 
+        # STARTDOC: architecture_deep_dive:ID:cli_variable_manager
         # create the variable manager, which will be shared throughout
         # the code, ensuring a consistent view of global variables
         variable_manager = VariableManager(loader=loader, inventory=inventory)
@@ -703,6 +710,9 @@ class CLI(with_metaclass(ABCMeta, object)):
         # load vars from cli options
         variable_manager.extra_vars = load_extra_vars(loader=loader, options=options)
         variable_manager.options_vars = load_options_vars(options, CLI.version_info(gitinfo=False))
+        # ENDDOC: architecture_deep_dive:ID:cli_variable_manager
 
+        # STARTDOC: architecture_deep_dive:ID:cli_play_prereqs_return
         return loader, inventory, variable_manager
+        # ENDDOC: architecture_deep_dive:ID:cli_play_prereqs_return
 
